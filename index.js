@@ -2,7 +2,11 @@
 
 const commander = require("commander");
 const package = require("./package.json");
-const { createModule, createService } = require("./src/create");
+const {
+  createModule,
+  createService,
+  createRepository,
+} = require("./src/create");
 
 const program = new commander.Command();
 
@@ -22,5 +26,11 @@ createCommand
   .requiredOption("-m, --module <module>", "Module name")
   .description("Create a new service")
   .action(createService);
+
+createCommand
+  .command("repository [name]")
+  .requiredOption("-m, --module <module>", "Module name")
+  .description("Create a new repository")
+  .action(createRepository);
 
 program.parse(process.argv);

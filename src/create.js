@@ -2,8 +2,14 @@ const { join } = require("path");
 const { mkdir, writeFile } = require("fs/promises");
 const { capitalize } = require("./utils");
 const {
+  templatesEnum,
   getTemplate
 } = require("./template");
+
+async function createFileWithTemplate(dir, file, template) {
+  await mkdir(dir, { recursive: true });
+  await writeFile(file, template);
+}
 
 async function createModule(name) {
   const capitalizedName = capitalize(name);
@@ -11,64 +17,85 @@ async function createModule(name) {
 
   await mkdir(moduleDir, { recursive: true });
 
-  await createService(`Create${capitalizedName}`, { module: name });
-  await createService(`Update${capitalizedName}`, { module: name });
-  await createService(`Delete${capitalizedName}`, { module: name });
-  await createService(`List${capitalizedName}`, { module: name });
-  await createService(`Show${capitalizedName}`, { module: name });
+  await createRepository(`${capitalizedName}`, { module: name });
+
+  const services = [
+    "Create",
+    "Update",
+    "Delete",
+    "List",
+    "Show",
+  ]
+
+  for (const service of services) {
+    await createService(`${service}${capitalizedName}`, { module: name });
+  }
 
   console.log(`Module ${name} created`);
 }
 
 async function createDTO(name, options) {
-  const dtoName = `I${capitalize(name)}DTO.ts`;
-  const dtoDir = join("src", "modules", options.module, "dtos");
-  const dtoFile = join("src", "modules", options.module, "dtos", dtoName);
-  const dtoTemplate = await getTemplate('dto',name);
+  const fileName = `I${capitalize(name)}DTO.ts`;
+  const dir = join("src", "modules", options.module, "dtos");
+  const template = await getTemplate(templatesEnum.dto,name);
+  const file = join("src", "modules", options.module, "dtos", fileName);
 
-  await mkdir(dtoDir, { recursive: true });
-  await writeFile(dtoFile, dtoTemplate);
+  await createFileWithTemplate(dir, file, template)
 
-  console.log(`DTO ${name} created in module ${options.module}`);
+  console.log(`DTO ${fileName} created in module ${options.module}`);
 }
 
 async function createService(name, options) {
-  const serviceName = `${capitalize(name)}Service.ts`;
-  const serviceDir = join("src", "modules", options.module, "services");
-  const serviceFile = join(
+  const fileName = `${capitalize(name)}Service.ts`;
+  const dir = join("src", "modules", options.module, "services");
+  const template = await getTemplate(templatesEnum.service, name);
+  const file = join(
     "src",
     "modules",
     options.module,
     "services",
-    serviceName
+    fileName
   );
-  const serviceTemplate = await getTemplate('service', name);
-
-  await mkdir(serviceDir, { recursive: true });
-  await writeFile(serviceFile, serviceTemplate);
-
-  console.log(`Service ${serviceName} created in module ${options.module}`);
 
   await createDTO(name, options);
+  await createFileWithTemplate(dir, file, template)
+  console.log(`Service ${fileName} created in module ${options.module}`);
 }
 
 async function createRepository(name, options) {
-  const repositoryName = `${capitalize(name)}Repository.ts`;
-  const repositoryDir = join("src", "modules", options.module, "repositories");
-  const repositoryFile = join(
+  const fileName = `${capitalize(name)}Repository.ts`;
+  const dir = join("src", "modules", options.module, "repositories", "database");
+  const template = await getTemplate(templatesEnum.repository, name);
+  const file = join(
     "src",
     "modules",
     options.module,
     "repositories",
-    repositoryName
+    "database",
+    fileName
   );
 
-  const repositoryTemplate = await getTemplate('repository', name);
+  await createRepositoryInterface(name, options)
+  await createFileWithTemplate(dir, file, template)
 
-  await mkdir(repositoryDir, { recursive: true });
-  await writeFile(repositoryFile, repositoryTemplate);
+  console.log(`Repository ${fileName} created in module ${options.module}`);
+}
 
-  console.log(`Repository ${repositoryName} created in module ${options.module}`);
+async function createRepositoryInterface(name, options) {
+  const fileName = `I${capitalize(name)}Repository.ts`;
+  const dir = join("src", "modules", options.module, "repositories");
+  const template = await getTemplate(templatesEnum.repositoryInterface, name);
+  const file = join(
+    "src",
+    "modules",
+    options.module,
+    "repositories",
+    fileName
+  );
+
+  await createFileWithTemplate(dir, file, template)
+
+  console.log(`Interface Repository ${fileName} created in module ${options.module}`);
 }
 
 module.exports = {

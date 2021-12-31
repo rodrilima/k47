@@ -1,15 +1,29 @@
 import ITargetNameRepository from '../ITargetNameRepository';
-import ITargetNameDTO from '../../dtos/ITargetNameDTO';
 import TargetName from '../../entities/TargetName';
+import ICreateTargetNameDTO from '../../dtos/ICreateTargetNameDTO';
+import IUpdateTargetNameDTO from '../../dtos/IUpdateTargetNameDTO';
+import IListTargetNameDTO from '../../dtos/IListTargetNameDTO';
 
 class TargetNameRepository implements ITargetNameRepository {
-    find(): Promise<TargetName[]> {}
+	find(props: IListTargetNameDTO): Promise<TargetName[]> {
+		throw Error('Method not implemented')
+	}
 
-    findById(id: string): Promise<TargetName> {}
+	findById(id: string): Promise<TargetName> {
+		throw Error('Method not implemented')
+	}
 
-    create(data: ITargetNameDTO): Promise<TargetName> {}
+	create(data: ICreateTargetNameDTO): Promise<TargetName> {
+		throw Error('Method not implemented')
+	}
 
-    update(): Promise<TargetName> {}
+	update(data: IUpdateTargetNameDTO): Promise<TargetName> {
+		throw Error('Method not implemented')
+	}
 
-    delete(): Promise<TargetName> {}
+	delete(id: string): Promise<void> {
+		throw Error('Method not implemented')
+	}
 }
+
+export default TargetNameRepository

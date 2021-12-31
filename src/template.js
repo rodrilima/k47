@@ -1,28 +1,23 @@
 const { readFile } = require("fs/promises");
 const { join } = require("path");
 
+const templatesEnum = {
+  service: 'service',
+  dto: 'dto',
+  repository: 'repository',
+  repositoryInterface: 'repositoryInterface',
+}
+
 async function getTemplate(type, name) {
-  let fileName;
-
-  switch(type) {
-    case 'service':
-      fileName ="service.template"
-      break;
-
-    case 'dto':
-      fileName ="dto.template"
-      break;
-
-    case 'repository':
-      fileName ="repository.template"
-      break;
-
-    default:
-      break;
-  }
+  const templates = {
+    service: "service.template",
+    dto: "dto.template",
+    repository: "repository.template",
+    repositoryInterface: "repositoryInterface.template"
+  };
 
   const service = await readFile(
-    join(__dirname, "templates", fileName),
+    join(__dirname, "templates", templates[type]),
     "utf-8"
   );
 
@@ -30,5 +25,6 @@ async function getTemplate(type, name) {
 }
 
 module.exports = {
+  templatesEnum,
   getTemplate
 };

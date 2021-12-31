@@ -1,0 +1,12 @@
+import ICreateTargetNameDTO from '../dtos/ICreateTargetNameDTO';
+import IUpdateTargetNameDTO from '../dtos/IUpdateTargetNameDTO';
+import IListTargetNameDTO from '../dtos/IListTargetNameDTO';
+import TargetName from '../entities/TargetName';
+
+export default interface ITargetNameRepository {
+    find(props: IListTargetNameDTO): Promise<TargetName[]>
+    findById(id: string): Promise<TargetName>
+    create(data: ICreateTargetNameDTO): Promise<TargetName>
+    update(data: IUpdateTargetNameDTO): Promise<TargetName>
+    delete(id: string): Promise<void>
+}
