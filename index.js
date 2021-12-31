@@ -2,7 +2,7 @@
 
 const commander = require("commander");
 const package = require("./package.json");
-const { createModule, createService } = require("./create");
+const { createModule, createService } = require("./src/create");
 
 const program = new commander.Command();
 

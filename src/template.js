@@ -11,9 +11,9 @@ async function getServiceTemplate(name) {
 
 async function getInterfaceServiceTemplate(name) {
   const service = await readFile(
-		join(__dirname, "templates", "dtos", "IServiceNameDTO.ts"),
-		"utf-8"
-	);
+    join(__dirname, "templates", "dtos", "IServiceNameDTO.ts"),
+    "utf-8"
+  );
   return service.replace(/ServiceName/g, name);
 }
 
