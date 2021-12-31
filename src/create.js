@@ -2,8 +2,7 @@ const { join } = require("path");
 const { mkdir, writeFile } = require("fs/promises");
 const { capitalize } = require("./utils");
 const {
-  getServiceTemplate,
-  getInterfaceServiceTemplate,
+  getTemplate
 } = require("./template");
 
 async function createModule(name) {
@@ -25,7 +24,7 @@ async function createDTO(name, options) {
   const dtoName = `I${capitalize(name)}DTO.ts`;
   const dtoDir = join("src", "modules", options.module, "dtos");
   const dtoFile = join("src", "modules", options.module, "dtos", dtoName);
-  const dtoTemplate = await getInterfaceServiceTemplate(name);
+  const dtoTemplate = await getTemplate('dto',name);
 
   await mkdir(dtoDir, { recursive: true });
   await writeFile(dtoFile, dtoTemplate);
@@ -43,7 +42,7 @@ async function createService(name, options) {
     "services",
     serviceName
   );
-  const serviceTemplate = await getServiceTemplate(name);
+  const serviceTemplate = await getTemplate('service', name);
 
   await mkdir(serviceDir, { recursive: true });
   await writeFile(serviceFile, serviceTemplate);
@@ -53,8 +52,28 @@ async function createService(name, options) {
   await createDTO(name, options);
 }
 
+async function createRepository(name, options) {
+  const repositoryName = `${capitalize(name)}Repository.ts`;
+  const repositoryDir = join("src", "modules", options.module, "repositories");
+  const repositoryFile = join(
+    "src",
+    "modules",
+    options.module,
+    "repositories",
+    repositoryName
+  );
+
+  const repositoryTemplate = await getTemplate('repository', name);
+
+  await mkdir(repositoryDir, { recursive: true });
+  await writeFile(repositoryFile, repositoryTemplate);
+
+  console.log(`Repository ${repositoryName} created in module ${options.module}`);
+}
+
 module.exports = {
   createModule,
   createService,
+  createRepository,
   createDTO,
 };

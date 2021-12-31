@@ -1,0 +1,10 @@
+import ITargetNameDTO from '../dtos/ITargetNameDTO';
+import TargetName from '../entities/TargetName';
+
+interface ITargetNameRepository {
+    find(): Promise<TargetName[]>
+    findById(id: string): Promise<TargetName>
+    create(data: ITargetNameDTO): Promise<TargetName>
+    update(): Promise<TargetName>
+    delete(): Promise<void>
+}

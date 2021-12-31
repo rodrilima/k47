@@ -1,0 +1,15 @@
+import ITargetNameRepository from '../ITargetNameRepository';
+import ITargetNameDTO from '../../dtos/ITargetNameDTO';
+import TargetName from '../../entities/TargetName';
+
+class TargetNameRepository implements ITargetNameRepository {
+    find(): Promise<TargetName[]> {}
+
+    findById(id: string): Promise<TargetName> {}
+
+    create(data: ITargetNameDTO): Promise<TargetName> {}
+
+    update(): Promise<TargetName> {}
+
+    delete(): Promise<TargetName> {}
+}

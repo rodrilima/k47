@@ -1,0 +1,11 @@
+import ITargetNameDTO from '../dtos/ITargetNameDTO';
+
+class TargetNameService {
+	constructor() { }
+
+	execute(data: ITargetNameDTO) {
+		return;
+	}
+}
+
+export default TargetNameService
