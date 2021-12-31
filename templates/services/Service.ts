@@ -1,9 +1,9 @@
-import IServiceNameService from '../dtos/IServiceNameDTO';
+import IServiceNameDTO from '../dtos/IServiceNameDTO';
 
-class ServiceNameService implements IServiceNameService {
+class ServiceNameService {
 	constructor() { }
 
-	execute() {
+	execute(data: IServiceNameDTO) {
 		return;
 	}
 }
